@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public GameObject enemyTwo;
     public GameObject enemyThree;
+    public TextMeshProUGUI livesText;
 
     private int score;
 
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
         InvokeRepeating("CreateHPUp", 3f, 10f);
         InvokeRepeating("CreateEnemyTwo", 1f, 6f);
         InvokeRepeating("CreateEnemyThree", 2f, 7f);
+        livesText.text = "Lives: 3";
     }
 
     // Update is called once per frame
@@ -69,4 +71,10 @@ public class GameManager : MonoBehaviour
     {
         Instantiate(HealthPUp, new Vector3(Random.Range(-8f, 8f), Random.Range(-8f, 8f), 0), Quaternion.identity);
     }
+
+    public void LoseLifeText(int currentLives)
+    {
+        livesText.text = "Lives: " + currentLives;
+    }
+
 }
