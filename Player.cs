@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Player : MonoBehaviour
 {
@@ -54,6 +56,7 @@ public class Player : MonoBehaviour
     public void LoseALife()
     {
         lives--;
+        GameObject.Find("GameManager").GetComponent<GameManager>().LoseLifeText(lives);
         //lives -= 1;
         //lives = lives - 1;
         if (lives == 0)
@@ -67,6 +70,7 @@ public class Player : MonoBehaviour
         if (lives<3)
         {
             lives++;
+            GameObject.Find("GameManager").GetComponent<GameManager>().LoseLifeText(lives);
         }
         else if (lives==3)
         {
