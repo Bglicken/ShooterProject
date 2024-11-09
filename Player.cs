@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
 public class Player : MonoBehaviour
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
     {
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
-        transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * Time.deltaTime * speed);
+        transform.Translate(new Vector3(horizontalInput, verticalInput,0) * Time.deltaTime * speed);
         if (transform.position.x > horizontalScreenSize || transform.position.x <= -horizontalScreenSize)
         {
             transform.position = new Vector3(transform.position.x * -1, transform.position.y, 0);
@@ -52,7 +52,6 @@ public class Player : MonoBehaviour
             Instantiate(bullet, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
         }
     }
-
     public void LoseALife()
     {
         lives--;
@@ -62,19 +61,6 @@ public class Player : MonoBehaviour
         if (lives == 0)
         {
             Destroy(this.gameObject);
-        }
-    }
-
-    public void GainALife()
-    {
-        if (lives<3)
-        {
-            lives++;
-            GameObject.Find("GameManager").GetComponent<GameManager>().LoseLifeText(lives);
-        }
-        else if (lives==3)
-        {
-            GameObject.Find("GameManager").GetComponent<GameManager>().EarnScore(1);
         }
     }
 }
