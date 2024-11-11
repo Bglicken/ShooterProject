@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Instantiate(player, transform.position, Quaternion.identity);
-        Instantiate(Coin, new Vector3(Random.Range(-8f, 8f), Random.Range(-4f, 4f), 0), Quaternion.identity);
         InvokeRepeating("CreateEnemyOne", 1f, 3f);
         CreateSky();
         score = 0;
@@ -32,6 +31,7 @@ public class GameManager : MonoBehaviour
         InvokeRepeating("CreateEnemyTwo", 1f, 6f);
         InvokeRepeating("CreateEnemyThree", 2f, 7f);
         livesText.text = "Lives: 3";
+        InvokeRepeating("CreateCoin", 2f, 6f);
     }
 
     // Update is called once per frame
@@ -74,6 +74,11 @@ public class GameManager : MonoBehaviour
         Instantiate(HealthPUp, new Vector3(Random.Range(-8f, 8f), Random.Range(-8f, 8f), 0), Quaternion.identity);
     }
 
+    void CreateCoin()
+    {
+        Instantiate(Coin, new Vector3(Random.Range(-8f, 8f), Random.Range(-8f, 8f), 0), Quaternion.identity);
+    }
+    
     public void LoseLifeText(int currentLives)
     {
         livesText.text = "Lives: " + currentLives;
