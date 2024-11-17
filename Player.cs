@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
     private float horizontalScreenSize = 11.5f;
-    private float verticalScreenSize = 7.5f;
+    private float verticalScreenSize = 5f;
     private float speed;
     private int lives;
     private int shooting;
@@ -43,14 +43,18 @@ public class Player : MonoBehaviour
     {
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
-        transform.Translate(new Vector3(horizontalInput, verticalInput,0) * Time.deltaTime * speed);
+        transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * Time.deltaTime * speed);
         if (transform.position.x > horizontalScreenSize || transform.position.x <= -horizontalScreenSize)
         {
             transform.position = new Vector3(transform.position.x * -1, transform.position.y, 0);
         }
-        if (transform.position.y > verticalScreenSize || transform.position.y < -verticalScreenSize)
+        if (transform.position.y > 0)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y * -1, 0);
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        }
+        else if (transform.position.y < -verticalScreenSize)
+        {
+            transform.position = new Vector3(transform.position.x, -verticalScreenSize, transform.position.z);
         }
     }
 
@@ -68,7 +72,7 @@ public class Player : MonoBehaviour
                     Instantiate(bullet, transform.position + new Vector3(0.5f, 1, 0), Quaternion.identity);
                     break;
                 case 3:
-                    Instantiate(bullet, transform.position + new Vector3(-0.5f, 1, 0), Quaternion.Euler(0, 0, 30f)); 
+                    Instantiate(bullet, transform.position + new Vector3(-0.5f, 1, 0), Quaternion.Euler(0, 0, 30f));
                     Instantiate(bullet, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
                     Instantiate(bullet, transform.position + new Vector3(0.5f, 1, 0), Quaternion.Euler(0, 0, -30f));
                     break;
@@ -81,7 +85,9 @@ public class Player : MonoBehaviour
         if (hasShield == false)
         {
             lives--;
-        } else if (hasShield == true)
+            GameObject.Find("GameManager").GetComponent<GameManager>().LoseLifeText(lives);
+        }
+        else if (hasShield == true)
         {
             //lose the shield
             hasShield = false;
@@ -94,6 +100,19 @@ public class Player : MonoBehaviour
             gameManager.GameOver();
             Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
+        }
+    }
+
+    public void GainALife()
+    {
+        if (lives < 3)
+        {
+            lives++;
+            GameObject.Find("GameManager").GetComponent<GameManager>().LoseLifeText(lives);
+        }
+        else if (lives == 3)
+        {
+            GameObject.Find("GameManager").GetComponent<GameManager>().EarnScore(1);
         }
     }
 
@@ -114,11 +133,11 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D whatIHit)
     {
-        if(whatIHit.tag == "Powerup")
+        if (whatIHit.tag == "Powerup")
         {
             gameManager.PlayPowerUp();
             int powerupType = Random.Range(1, 5); //this can be 1, 2, 3, or 4
-            switch(powerupType)
+            switch (powerupType)
             {
                 case 1:
                     //speed powerup
@@ -126,24 +145,28 @@ public class Player : MonoBehaviour
                     gameManager.UpdatePowerupText("Picked up Speed!");
                     thruster.gameObject.SetActive(true);
                     StartCoroutine(SpeedPowerDown());
+                    gameManager.PlayPowerDown();
                     break;
                 case 2:
                     //double shot
                     shooting = 2;
                     gameManager.UpdatePowerupText("Picked up Double Shot!");
-                    StartCoroutine (ShootingPowerDown());
+                    StartCoroutine(ShootingPowerDown());
+                    gameManager.PlayPowerDown();
                     break;
                 case 3:
                     //triple shot
                     shooting = 3;
                     gameManager.UpdatePowerupText("Picked up Triple Shot!");
                     StartCoroutine(ShootingPowerDown());
+                    gameManager.PlayPowerDown();
                     break;
                 case 4:
                     //shield
                     gameManager.UpdatePowerupText("Picked up Shield!");
                     shield.gameObject.SetActive(true);
                     hasShield = true;
+                    gameManager.PlayPowerDown();
                     break;
             }
             Destroy(whatIHit.gameObject);
