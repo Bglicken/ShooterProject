@@ -145,24 +145,28 @@ public class Player : MonoBehaviour
                     gameManager.UpdatePowerupText("Picked up Speed!");
                     thruster.gameObject.SetActive(true);
                     StartCoroutine(SpeedPowerDown());
+                    gameManager.PlayPowerDown();
                     break;
                 case 2:
                     //double shot
                     shooting = 2;
                     gameManager.UpdatePowerupText("Picked up Double Shot!");
                     StartCoroutine(ShootingPowerDown());
+                    gameManager.PlayPowerDown();
                     break;
                 case 3:
                     //triple shot
                     shooting = 3;
                     gameManager.UpdatePowerupText("Picked up Triple Shot!");
                     StartCoroutine(ShootingPowerDown());
+                    gameManager.PlayPowerDown();
                     break;
                 case 4:
                     //shield
                     gameManager.UpdatePowerupText("Picked up Shield!");
                     shield.gameObject.SetActive(true);
                     hasShield = true;
+                    gameManager.PlayPowerDown();
                     break;
             }
             Destroy(whatIHit.gameObject);
