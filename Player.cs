@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
     private float horizontalScreenSize = 11.5f;
-    private float verticalScreenSize = 7.5f;
+    private float verticalScreenSize = 5f;
     private float speed;
     private int lives;
     private int shooting;
@@ -48,9 +48,13 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x * -1, transform.position.y, 0);
         }
-        if (transform.position.y > verticalScreenSize || transform.position.y < -verticalScreenSize)
+        if (transform.position.y > 0)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y * -1, 0);
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        }
+        else if (transform.position.y < -verticalScreenSize)
+        {
+            transform.position = new Vector3(transform.position.x, -verticalScreenSize, transform.position.z);
         }
     }
 
